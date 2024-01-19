@@ -17,9 +17,8 @@ class SearchResult {
   }
 
   setState(nextData) {
-    if (nextData.length) {
-      this.data = nextData;
-    } else {
+    this.data = nextData;
+    if (nextData.length == 0) {
       if (this.$searchResultText.className.includes("v-none")) {
         this.$searchResultText.className =
           this.$searchResultText.className.replace("v-none", "v-show");
@@ -30,6 +29,7 @@ class SearchResult {
 
   render() {
     const datas = this.data;
+    console.log(datas);
     if (datas.length) {
       this.$searchResult.innerHTML = this.data
         .map(
