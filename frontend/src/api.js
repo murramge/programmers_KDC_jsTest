@@ -22,4 +22,27 @@ const api = {
         }
       });
   },
+  fetchCatsRandom: () => {
+    if ($loadingSpineer.className.includes("v-none")) {
+      $loadingSpineer.className = $loadingSpineer.className.replace(
+        "v-none",
+        "v-show"
+      );
+    }
+    return fetch(`${API_ENDPOINT}/api/cats/random50`)
+      .then((res) => {
+        return res.json();
+      })
+      .finally(() => {
+        if ($loadingSpineer.className.includes("v-show")) {
+          $loadingSpineer.className = $loadingSpineer.className.replace(
+            "v-show",
+            "v-none"
+          );
+        }
+      });
+  },
+  fetchCatsDetail: (id) => {
+    return fetch(`${API_ENDPOINT}/api/cats/${id}`).then((res) => res.json());
+  },
 };

@@ -8,6 +8,7 @@ class SearchResult {
     this.$searchResult = document.createElement("div");
     this.$searchResult.className = "SearchResult";
     this.$searchResultText = document.querySelector(".search-result-text");
+
     $target.appendChild(this.$searchResult);
 
     this.data = initialData;
