@@ -9,28 +9,28 @@ class App {
 
     this.searchInput = new SearchInput({
       $target,
-      onSearch: keyword => {
+      onSearch: (keyword) => {
         api.fetchCats(keyword).then(({ data }) => this.setState(data));
-      }
+      },
     });
 
     this.searchResult = new SearchResult({
       $target,
       initialData: this.data,
-      onClick: image => {
+      onClick: (image) => {
         this.imageInfo.setState({
           visible: true,
-          image
+          image,
         });
-      }
+      },
     });
 
     this.imageInfo = new ImageInfo({
       $target,
       data: {
         visible: false,
-        image: null
-      }
+        image: null,
+      },
     });
   }
 

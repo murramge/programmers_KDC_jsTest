@@ -225,3 +225,10 @@ body * {
   }
 } 
 */
+
+.v-none {
+  display: none;
+}
+.v-show {
+  display: block;
+}
