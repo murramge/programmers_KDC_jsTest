@@ -24,13 +24,17 @@ class SearchResult {
         this.$searchResultText.className =
           this.$searchResultText.className.replace("v-none", "v-show");
       }
+    } else {
+      if (this.$searchResultText.className.includes("v-show")) {
+        this.$searchResultText.className =
+          this.$searchResultText.className.replace("v-show", "v-none");
+      }
     }
     this.render();
   }
 
   render() {
     const datas = this.data;
-    console.log(datas);
     if (datas.length) {
       this.$searchResult.innerHTML = this.data
         .map(

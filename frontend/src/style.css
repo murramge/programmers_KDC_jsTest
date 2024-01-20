@@ -10,6 +10,9 @@
 #dn {
   display: none;
 }
+.keyword {
+  margin: 2px;
+}
 
 .toggle2 {
   cursor: pointer;
