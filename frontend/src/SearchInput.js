@@ -2,6 +2,7 @@ const TEMPLATE = '<input type="text">';
 
 class SearchInput {
   constructor({ $target, onSearch, onRandomSearch }) {
+    const $wrapper = document.createElement("section");
     const $searchInput = document.createElement("input");
     const $randombutton = document.createElement("button");
 
@@ -11,8 +12,9 @@ class SearchInput {
     $randombutton.className = "random-button";
     $randombutton.textContent = "랜덤버튼";
 
-    $target.appendChild($searchInput);
-    $target.appendChild($randombutton);
+    $target.appendChild($wrapper);
+    $wrapper.appendChild($searchInput);
+    $wrapper.appendChild($randombutton);
 
     $searchInput.addEventListener("keyup", (e) => {
       if (e.keyCode === 13) {
