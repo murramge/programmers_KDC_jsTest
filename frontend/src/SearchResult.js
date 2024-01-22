@@ -58,14 +58,32 @@ class SearchResult {
     });
   };
 
+  listObserver = new IntersectionObserver((items, observer) => {
+    items.forEach((item) => {
+      //아이템이 화면에 보일 때
+      if (item.isIntersecting) {
+        //이미지를 로드한다.
+        item.target.querySelector("img").src =
+          item.target.querySelector("img").dataset.src;
+        //마지막 요소를 찾아낸다.
+        console.log(this.data.length);
+        let dataIndex = Number(item.target.dataset.index);
+        //마지막 요소라면 nextpage 호출.
+        if (dataIndex + 1 === this.data.length) {
+          this.onNextPage();
+        }
+      }
+    });
+  });
+
   render() {
     const datas = this.data;
     if (datas.length) {
       this.$searchResult.innerHTML = this.data
         .map(
-          (cat) => `
-          <li class="item">
-            <img src=${cat.url} alt=${cat.name} />
+          (cat, index) => `
+          <li class="item"  data-index=${index} >
+            <img src="https://via.placeholder.com/200x300" data-src=${cat.url} alt=${cat.name} />
           </li>
         `
         )
@@ -75,10 +93,8 @@ class SearchResult {
         $item.addEventListener("click", () => {
           this.onClick(this.data[index]);
         });
+        this.listObserver.observe($item);
       });
-
-      let listItems = this.$searchResult.querySelectorAll(".item");
-      this.applyEventToElement(listItems);
     }
   }
 }
