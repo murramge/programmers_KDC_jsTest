@@ -21,7 +21,7 @@ class App {
       onSearch: (keyword) => {
         this.Loding.show();
         api.fetchCats(keyword).then(({ data }) => {
-          this.setState(data);
+          this.setState(data ? data : "");
           this.Loding.hide();
           //로컬에 저장
           this.saveResult(data);
