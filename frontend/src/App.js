@@ -1,9 +1,20 @@
 console.log("app is running!");
 
+import Loding from "./loding.js";
+import DarkmodeToggle from "./DarkmodeToggle";
+import SearchInput from "./SearchInput";
+import SearchResult from "./SearchResult";
+import ImageInfo from "./ImageInfo";
+import api from "./api.js";
+
 class App {
   $target = null;
-  data = [];
-  page = 1;
+  DEFAULT_PAGE = 1;
+  //1. 데이터안에 페이지 넣기
+  data = {
+    items: [],
+    page: this.DEFAULT_PAGE,
+  };
 
   constructor($target) {
     this.$target = $target;
@@ -21,7 +32,10 @@ class App {
       onSearch: (keyword) => {
         this.Loding.show();
         api.fetchCats(keyword).then(({ data }) => {
-          this.setState(data ? data : "");
+          this.setState({
+            items: data ? data : [],
+            page: this.DEFAULT_PAGE,
+          });
           this.Loding.hide();
           //로컬에 저장
           this.saveResult(data);
@@ -31,14 +45,17 @@ class App {
         this.Loding.show();
         api.fetchCatsRandom().then(({ data }) => {
           this.Loding.hide();
-          this.setState(data);
+          this.setState({
+            items: data ? data : "",
+            page: this.DEFAULT_PAGE,
+          });
         });
       },
     });
 
     this.searchResult = new SearchResult({
       $target,
-      initialData: this.data,
+      initialData: this.data.items,
       onClick: (cat) => {
         this.imageInfo.showDetail({
           visible: true,
@@ -51,13 +68,14 @@ class App {
           localStorage.getItem("keywordHistory") === null
             ? []
             : localStorage.getItem("keywordHistory").split(",");
-        const page = this.page + 1;
-
+        const page = this.data.page + 1;
         api.fetchCatsPage(keywordhistory[0], page).then(({ data }) => {
-          let newData = this.data.concat(data);
-          this.setState(newData);
-          this.page = page;
-
+          let newData = this.data.items.concat(data);
+          console.log(page);
+          this.setState({
+            items: newData,
+            page: Number(page),
+          });
           this.Loding.hide();
         });
       },
@@ -75,7 +93,7 @@ class App {
 
   setState(nextData) {
     this.data = nextData;
-    this.searchResult.setState(nextData);
+    this.searchResult.setState(nextData.items);
   }
 
   saveResult(result) {
@@ -88,6 +106,11 @@ class App {
         ? []
         : JSON.parse(localStorage.getItem("lastResult"));
 
-    this.setState(lastresult);
+    this.setState({
+      items: lastresult,
+      page: this.DEFAULT_PAGE,
+    });
   }
 }
+
+export default App;

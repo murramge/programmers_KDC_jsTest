@@ -98,3 +98,7 @@ class SearchResult {
     }
   }
 }
+
+export default SearchResult;
+
+//데이터 형태가 바뀌어도 하위 컴포넌트들은 잘 동작해야함.

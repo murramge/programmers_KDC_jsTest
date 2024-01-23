@@ -1,3 +1,4 @@
+import uniqueArray from "./utils/uniqueArray";
 class KeywordHistory {
   $KeywordHistory = null;
   data = null;
@@ -19,6 +20,9 @@ class KeywordHistory {
   addKeyword(keyword) {
     let keywordHistory = this.getHistory();
     keywordHistory.unshift(keyword);
+    //중복제거
+    keywordHistory = uniqueArray(keywordHistory);
+
     keywordHistory = keywordHistory.slice(0, 5);
     localStorage.setItem("keywordHistory", keywordHistory.join(","));
     this.init();
@@ -35,10 +39,7 @@ class KeywordHistory {
     this.render();
   }
 
-  render() {
-    this.$KeywordHistory.innerHTML = this.data
-      .map((keyword) => `<li><button>${keyword}</button></li>`)
-      .join("");
+  bindEvent() {
     this.$KeywordHistory
       .querySelectorAll("li button")
       .forEach(($item, index) => {
@@ -48,4 +49,15 @@ class KeywordHistory {
         });
       });
   }
+
+  render() {
+    this.$KeywordHistory.innerHTML = this.data
+      .map((keyword) => `<li><button>${keyword}</button></li>`)
+      .join("");
+    this.bindEvent();
+  }
 }
+
+export default KeywordHistory;
+
+//메소드를 용도별로 분리

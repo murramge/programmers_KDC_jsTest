@@ -1,7 +1,6 @@
-const API_ENDPOINT = "http://localhost:4001";
-const REQUEST_ERROR = {
-  500: { msg: "요청실패" },
-};
+import config from "./config";
+const { API_ENDPOINT, REQUEST_ERROR } = config;
+
 const request = async (url) => {
   try {
     const result = await fetch(url);
@@ -32,3 +31,5 @@ const api = {
     return request(`${API_ENDPOINT}/api/cats/${id}`);
   },
 };
+
+export default api;

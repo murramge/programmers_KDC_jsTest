@@ -1,3 +1,4 @@
+import KeywordHistory from "./KeywordHistory";
 const TEMPLATE = '<input type="text">';
 
 class SearchInput {
@@ -33,8 +34,10 @@ class SearchInput {
       $target,
       onSearch,
     });
-
-    console.log("SearchInput created.", this);
   }
   render() {}
 }
+
+export default SearchInput;
+
+//상황에 맞는 const let 변수!

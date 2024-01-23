@@ -31,3 +31,7 @@ class DarkmodeToggle {
 
   render() {}
 }
+
+export default DarkmodeToggle;
+
+//동작 설명, 순서는 주석을 남겨두는것이 좋음

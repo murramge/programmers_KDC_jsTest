@@ -1,3 +1,4 @@
+import api from "./api";
 class ImageInfo {
   $imageInfo = null;
   data = null;
@@ -18,13 +19,15 @@ class ImageInfo {
     this.render();
   }
 
-  showDetail(data) {
-    api.fetchCatsDetail(data.cat.id).then(({ data }) => {
+  //async await 적용
+  async showDetail(data) {
+    const detailinfo = await api.fetchCatsDetail(data.cat.id);
+    if (detailinfo) {
       this.setState({
         visible: true,
-        cat: data,
+        cat: detailinfo.data,
       });
-    });
+    }
   }
 
   closeImageInfo() {
@@ -73,3 +76,7 @@ class ImageInfo {
     }
   }
 }
+
+export default ImageInfo;
+
+//실무에서는 TODO: 이런 형식으로 달아놓긴 함.
