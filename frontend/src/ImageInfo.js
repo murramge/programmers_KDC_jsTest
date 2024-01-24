@@ -1,3 +1,4 @@
+import api from "./api";
 class ImageInfo {
   $imageInfo = null;
   data = null;
@@ -10,39 +11,30 @@ class ImageInfo {
     $target.appendChild($imageInfo);
 
     this.data = data;
-
     this.render();
   }
 
   setState(nextData) {
     this.data = nextData;
     this.render();
-    const $close = document.querySelector(".close");
-    const $contentWrapper = document.querySelector(".content-wrapper");
-    console.log($contentWrapper);
-    $close.addEventListener("click", () => {
-      this.data.visible = false;
-      this.render();
-    });
-    this.$imageInfo.addEventListener("click", () => {
-      this.data.visible = false;
-      this.render();
-    });
-    // $contentWrapper.addEventListener("keyup", (e) => {
-    //   console.log(e);
-    //   if (e.keyCode == 27 || e.which == 27) {
-    //     this.data.visible = false;
-    //     this.render();
-    //   }
-    // });
   }
 
-  showDetail(data) {
-    api.fetchCatsDetail(data.cat.id).then(({ data }) => {
+  //async await 적용
+  async showDetail(data) {
+    const detailinfo = await api.fetchCatsDetail(data.cat.id);
+    if (detailinfo) {
       this.setState({
         visible: true,
-        cat: data,
+        cat: detailinfo.data,
       });
+    }
+  }
+
+  closeImageInfo() {
+    console.log("닫기");
+    this.setState({
+      visible: false,
+      cat: undefined,
     });
   }
 
@@ -63,8 +55,28 @@ class ImageInfo {
           </div>
         </div>`;
       this.$imageInfo.style.display = "block";
+
+      //keypress, keydown, keyup 차이점
+      document.addEventListener("keydown", (e) => {
+        if (e.key == "Escape") {
+          this.closeImageInfo();
+        }
+      });
+
+      this.$imageInfo.addEventListener("click", (e) => {
+        if (
+          e.target.className === "ImageInfo" ||
+          e.target.className === "close"
+        ) {
+          this.closeImageInfo();
+        }
+      });
     } else {
       this.$imageInfo.style.display = "none";
     }
   }
 }
+
+export default ImageInfo;
+
+//실무에서는 TODO: 이런 형식으로 달아놓긴 함.

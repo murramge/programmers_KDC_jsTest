@@ -1,94 +1,11 @@
-:root {
-  --bg-color: #fff;
-  --font-color: #000;
-}
-.darkmode {
-  --bg-color: #999;
-  --font-color: white;
+:root[color-mode="dark"] {
+  --background: #000;
+  --textcolor: white;
 }
 
-#dn {
-  display: none;
-}
-.keyword {
-  margin: 2px;
-}
-
-.toggle2 {
-  cursor: pointer;
-  display: inline-block;
-  position: relative;
-  margin-left: 75px;
-  width: 56px;
-  height: 32px;
-  background: #dfe2e3;
-  border-radius: 84px;
-  transition: background 200ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
-}
-
-.toggle2:before,
-.toggle2:after {
-  margin-top: 5px;
-}
-
-.toggle2:before {
-  content: "light";
-  position: absolute;
-  left: -50px;
-  color: #749ed7;
-}
-
-.toggle2:after {
-  content: "dark";
-  position: absolute;
-  right: -50px;
-}
-
-.toggle__handler {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  display: inline-block;
-  position: relative;
-  z-index: 2;
-  background: #ffe5b5;
-  background: #ffde7b;
-  border-color: #debd56;
-  box-shadow: none;
-  background-size: 0;
-  transition: transform 0.5s;
-  border: 0.188em solid #caba94;
-}
-
-#dn:checked + .toggle2 {
-  background: #dfe2e3;
-}
-
-#dn:checked + .toggle2:before {
-  color: var(--font-color);
-}
-
-#dn:checked + .toggle2:after {
-  color: var(--check-color);
-}
-
-#dn:checked + .toggle2 .toggle__handler {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  display: inline-block;
-  transform: translate3d(28px, 0, 0) rotate(0);
-  border: 0.188em solid #caba94;
-  background: #ffefb5;
-  box-shadow: inset -0.15em -0.15em #ffe096;
-  background-image: radial-gradient(
-      circle at 60% 10%,
-      #e6cea5 15%,
-      transparent 0
-    ),
-    radial-gradient(circle at 30% 50%, #e6cea5 10%, transparent 0),
-    radial-gradient(circle at 60% 70%, #e6cea5 13%, transparent 0);
-  transition: transform 0.2s ease-in-out, background 0.3s, border-color 0.3s;
+body {
+  background-color: var(--background);
+  color: var(--textcolor);
 }
 
 @font-face {
@@ -96,7 +13,6 @@
   src: url("./fonts/Goyang.woff") format("woff");
   font-weight: normal;
   font-style: normal;
-  background-color: var(--bg-color);
 }
 
 html {
@@ -122,47 +38,56 @@ body * {
   max-width: 1200px;
   heigth: 1200px;
   column-gap: 1.5em;
-  background-color: var(--bg-color);
 }
 .SearchResult {
   margin-top: 10px;
   display: grid;
   grid-template-columns: repeat(4, minmax(250px, 1fr));
   grid-gap: 10px;
-  background-color: var(--bg-color);
 }
 
-@media (max-width: 992px) {
+.Loding {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 30%);
+}
+
+.Loding p {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+}
+
+@media screen and (max-width: 992px) {
   .SearchResult {
-    margin-top: 10px;
-    display: grid;
     grid-template-columns: repeat(3, minmax(250px, 1fr));
-    grid-gap: 10px;
   }
 }
 
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .SearchResult {
-    margin-top: 10px;
-    display: grid;
     grid-template-columns: repeat(2, minmax(250px, 1fr));
-    grid-gap: 10px;
+  }
+  .ImageInfo .content-wrapper {
+    width: 100%;
   }
 }
-@media (max-width: 576px) {
+@media screen and (max-width: 576px) {
   .SearchResult {
-    width: 100%;
-    height: 100%;
-    margin-top: 10px;
-    display: grid;
     grid-template-columns: repeat(1, minmax(100px, 1fr));
-    grid-gap: 10px;
   }
 }
 
 .SearchResult img {
   width: 100%;
   height: 100%;
+  min-height: 300px;
   object-fit: cover;
 }
 .SearchResult .item {
@@ -171,35 +96,34 @@ body * {
   margin: 0 0 1em;
   width: 100%;
   height: 100%;
-  background-color: var(--bg-color);
 }
 .SearchInput {
-  width: 100%;
+  width: 80%;
   height: 10%;
   font-size: 40px;
   padding: 10px 15px;
-  color: var(--font-color);
-  background-color: var(--bg-color);
 }
+
+.RandomButton {
+  width: 18%;
+  font-size: 20px;
+  cursor: pointer;
+}
+
 .ImageInfo {
   position: fixed;
   left: 0;
   top: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
 }
 .ImageInfo .title {
   display: flex;
   justify-content: space-between;
-  background-color: var(--bg-color);
-  color: var(--font-color);
 }
 .ImageInfo .title,
 .ImageInfo .description {
   padding: 5px;
-  background-color: var(--bg-color);
-  color: var(--font-color);
 }
 .ImageInfo .content-wrapper {
   position: absolute;
@@ -209,12 +133,13 @@ body * {
   background-color: #fff;
   border: 1px solid #eee;
   border-radius: 5px;
+  background-color: var(--background);
 }
 .ImageInfo .content-wrapper img {
   width: 100%;
 }
-/* 
-@media (prefers-color-scheme: dark) {
+
+/* @media (prefers-color-scheme: dark) {
   body {
     background-color: #000;
     color: white;
@@ -226,8 +151,7 @@ body * {
     background-color: #000;
     color: white;
   }
-} 
-*/
+} */
 
 .v-none {
   display: none;

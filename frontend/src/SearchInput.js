@@ -1,66 +1,43 @@
+import KeywordHistory from "./KeywordHistory";
 const TEMPLATE = '<input type="text">';
 
 class SearchInput {
   constructor({ $target, onSearch, onRandomSearch }) {
-    const $searchInput = document.createElement("input");
-    const $randombutton = document.createElement("button");
+    const $wrapper = document.createElement("section");
+    $target.appendChild($wrapper);
 
+    const $searchInput = document.createElement("input");
     this.$searchInput = $searchInput;
     this.$searchInput.placeholder = "고양이 검색해보세요.|";
     $searchInput.className = "SearchInput";
-    $randombutton.className = "random-button";
-    $randombutton.textContent = "랜덤버튼";
+    $wrapper.appendChild($searchInput);
 
-    $target.appendChild($searchInput);
-    $target.appendChild($randombutton);
+    const $randomButton = document.createElement("button");
+    this.$randomButton = $randomButton;
+    this.$randomButton.className = "RandomButton";
+    this.$randomButton.textContent = "랜덤고양이";
+    $wrapper.appendChild($randomButton);
 
-    $searchInput.addEventListener("keyup", (e) => {
-      if (e.keyCode === 13) {
+    $searchInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
         onSearch(e.target.value);
-        let searchInputdata = localStorage.getItem("searchInputData");
-        if (!searchInputdata) {
-          localStorage.setItem("searchInputData", e.target.value);
-        } else {
-          localStorage.setItem(
-            "searchInputData",
-            searchInputdata + "," + e.target.value
-          );
-        }
+        //키워드 저장
+        this.KeywordHistory.addKeyword(e.target.value);
       }
     });
 
-    let searchInputdata = localStorage.getItem("searchInputData");
-
-    const addEvent = (className, text) => {
-      className.addEventListener("click", () => {
-        onSearch(text);
-      });
-    };
-
-    const keyWordText = () => {
-      if (searchInputdata) {
-        searchInputdata = [...new Set(searchInputdata.split(","))];
-        if (searchInputdata.length >= 5) {
-          console.log(searchInputdata);
-          searchInputdata = searchInputdata.slice(searchInputdata.length - 5);
-          searchInputdata.map((text, index) => {
-            if (index < 5) {
-              const $keywordContent = document.createElement("span");
-              $target.appendChild($keywordContent);
-              $keywordContent.className = "keyword";
-              $keywordContent.textContent = text;
-              addEvent($keywordContent, text);
-            }
-          });
-        }
-      }
-    };
-    keyWordText();
-    $randombutton.addEventListener("click", (e) => {
+    $randomButton.addEventListener("click", (e) => {
       onRandomSearch();
     });
 
-    console.log("SearchInput created.", this);
+    this.KeywordHistory = new KeywordHistory({
+      $target,
+      onSearch,
+    });
   }
   render() {}
 }
+
+export default SearchInput;
+
+//상황에 맞는 const let 변수!

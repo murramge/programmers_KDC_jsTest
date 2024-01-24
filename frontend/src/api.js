@@ -1,48 +1,35 @@
-const API_ENDPOINT = "http://localhost:4001";
-const $loadingSpineer = document.querySelector(".loading-spinner");
-let loading = false;
+import config from "./config";
+const { API_ENDPOINT, REQUEST_ERROR } = config;
+
+const request = async (url) => {
+  try {
+    const result = await fetch(url);
+    console.dir(result.status);
+    if (result.status == 200) {
+      return result.json();
+    } else {
+      throw REQUEST_ERROR[result.status];
+    }
+  } catch (error) {
+    console.log(error);
+    alert(error.msg);
+    return { data: null };
+  }
+};
+
 const api = {
   fetchCats: (keyword) => {
-    if ($loadingSpineer.className.includes("v-none")) {
-      $loadingSpineer.className = $loadingSpineer.className.replace(
-        "v-none",
-        "v-show"
-      );
-    }
-    return fetch(`${API_ENDPOINT}/api/cats/search?q=${keyword}`)
-      .then((res) => {
-        return res.json();
-      })
-      .finally(() => {
-        if ($loadingSpineer.className.includes("v-show")) {
-          $loadingSpineer.className = $loadingSpineer.className.replace(
-            "v-show",
-            "v-none"
-          );
-        }
-      });
+    return request(`${API_ENDPOINT}/api/cats/search?q=${keyword}`);
+  },
+  fetchCatsPage: (keyword, page) => {
+    return request(`${API_ENDPOINT}/api/cats/search?q=${keyword}&page=${page}`);
   },
   fetchCatsRandom: () => {
-    if ($loadingSpineer.className.includes("v-none")) {
-      $loadingSpineer.className = $loadingSpineer.className.replace(
-        "v-none",
-        "v-show"
-      );
-    }
-    return fetch(`${API_ENDPOINT}/api/cats/random50`)
-      .then((res) => {
-        return res.json();
-      })
-      .finally(() => {
-        if ($loadingSpineer.className.includes("v-show")) {
-          $loadingSpineer.className = $loadingSpineer.className.replace(
-            "v-show",
-            "v-none"
-          );
-        }
-      });
+    return request(`${API_ENDPOINT}/api/cats/random50`);
   },
   fetchCatsDetail: (id) => {
-    return fetch(`${API_ENDPOINT}/api/cats/${id}`).then((res) => res.json());
+    return request(`${API_ENDPOINT}/api/cats/${id}`);
   },
 };
+
+export default api;
